@@ -6,8 +6,9 @@ import struct
 class PickupHeadData:
     __HeadStruct = None
     HeadString = None
+
     def __init__(self, HeadStrcut):
         self.__HeadStruct = HeadStrcut
 
-    def DoPickupData(self):
+    def do_pickup_data(self):
         self.HeadString = struct.pack()
