@@ -6,28 +6,34 @@ from File.File import File
 import queue
 import threading
 
+
 class MainController:
+    dataque = None
 
     def __init__(self):
         self._sys_init()
+        self.dataque = queue.Queue()
         self._run()
-        self.dataque = queue.Queue
 
     def _sys_init(self):
-        self.broadcast = BroadcastUdp
-        self.file = File
+        self.broadcast = BroadcastUdp(34569)
+        self.file = File()
 
     def _run(self):
-        threading.Thread(target=self._pth_run)
+        main_thd = threading.Thread(target=self._pth_run)
+        main_thd.start()
         while True:
             data = self.dataque.get()
+            print(data,__name__)
             self.file.write_mac(data)
 
     def _pth_run(self):
         while True:
             data = self.broadcast.get_broadcast_data()
-            self.dataque.put(data)
+            if len(data) >20:
+                self.dataque.put(data)
 
+main = MainController()
         #打开文件
         #建立服务器
         #建立广播程序

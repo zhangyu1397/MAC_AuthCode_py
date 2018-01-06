@@ -1,14 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from NetBrocastUdp.HeadData import HeadData
 import struct
+import binascii
+import ctypes
 
-class PickupHeadData:
-    __HeadStruct = None
-    HeadString = None
 
-    def __init__(self, HeadStrcut):
-        self.__HeadStruct = HeadStrcut
+class PickupHeadData(HeadData):
+
+    def __init__(self):
+        self.__head_data = HeadData.broadcast_head
+        self.do_pickup_data()
 
     def do_pickup_data(self):
-        self.HeadString = struct.pack()
+        headstr = struct.Struct('BBBBIIBBHI')
+        self.prebuffer = headstr.pack(*self.__head_data)
+
+    def do_unpick_data(self, data):
+        ndata = data[20:]
+        print(ndata,__)
+        return ndata
+
+
+
+
