@@ -18,15 +18,13 @@ class BroadcastUdp:
     def __setup_client(self):
         self._udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
-        self._udp.bind(('127.0.0.1', self.__port))
+        self._udp.bind(('', self.__port))
 
     def __broadcast_data(self):
-        print("broadcast\n")
         self._udp.sendto(self.__parck.prebuffer, ('255.255.255.255', self.__port))
 
     def get_broadcast_data(self):
         data, addr = self._udp.recvfrom(1024)
-        print("data:",data)
         return self.__parck.do_unpick_data(data)
 
 

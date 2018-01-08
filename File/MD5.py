@@ -10,5 +10,7 @@ class Md5:
     def __init__(self, str):
         str = str.lower()
         str = str + self.__add_str
-        self.md5_data = hashlib.md5(str)
+        self.md5 = hashlib.md5()
+        self.md5.update(str.encode("utf-8"))
+        self.md5_data = self.md5.hexdigest()
 

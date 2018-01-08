@@ -7,39 +7,59 @@ import json
 
 class File:
     __fd = None
-
+    MAX_READLINES = 1024
+    __mac_ser = 0
     def __init__(self):
-            print('open MAC-AuthCode success\n')
+        with open("./MAC-AuthCode.txt", 'a+') as self.__fd:
+            print("sucess open\n")
 
     def write_mac(self, wirtestring):
-        data = json.loads(wirtestring)
-        print(data)
-        mdata = data['NetWork.NetCommon']
-        mac = mdata['mac']
-        ret, ser = self.__check_mac(mac)
-        if ret:
-            md5 = Md5(mac)
-            self.__data_trans(md5, ret)
-            self.__fd.write(self.__data_trans(ret, mac, data))
+        with open("./MAC-AuthCode.txt", 'a+') as self.__fd:
+            data = json.loads(wirtestring)
+            mdata = data['NetWork.NetCommon']
+            mac = mdata['MAC']
+            ret, ser = self.__check_mac(mac)
+            if ret == 1:
+                md5 = Md5(mac)
+                self.__fd.seek(0, 2)  # 0，光标移动到头；1光标移动当前位置；2光标移动末尾
+                self.__fd.write(self.__data_trans(ser, mac, md5.md5_data))
 
     def __data_trans(self, ret, mac, data):
-        #xxx MAC: 00:12:16:82:0a:7b    AuthCode: 98cc52ee711d20953575d67a280abc28
         ret += 1
-        pic_data = "%3d MAC: %s    AuthCode: %s"%(ret, mac, data)
+        pic_data = "%3d MAC: %s    AuthCode: %s\n" % (ret, mac, data)
         return pic_data
 
     def __check_mac(self, mac):
-        with os.open('MAC-AuthCode.txt', 'a+') as self.__fd:
-            for eachline in self.__fd:
-                ser,gmac = self.__get_mac(eachline)
-                if gmac == mac:
-                    return 0, ser
-            return 1, ser
+        self.__fd.seek(0, 0)
+        while True:
+            read_line = self.__fd.readline(1024)
+            ser, gmac = self.__get_mac(read_line)
+            if read_line == "":
+                return 1, ser
+            print("mac:%s gmac:%s\n" % (mac, gmac))
+            if gmac == mac:
+                return 0, ser
 
     def __get_mac(self, data):
-        ser = data[0:2]
+        tmp = 0
+        #pdata = str(data, encoding="utf-8")
+        print("data type:", type(data))
+
+
         mac = data[9:26]
-        return int(ser), mac
+        ser = data[0:3]
+
+        if len(ser) == 3:
+            print("ser",int(ser))
+            print("ll", type(ser[0]), len(ser[-1]))
+            tmp = int(ser)
+            if tmp > self.__mac_ser:
+                self.__mac_ser = tmp
+                print("mac_ser:", self.__mac_ser)
+            return self.__mac_ser, mac
+        print("mac_ser:", self.__mac_ser)
+        return self.__mac_ser, mac
+
 
 
 

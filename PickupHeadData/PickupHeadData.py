@@ -18,8 +18,8 @@ class PickupHeadData(HeadData):
         self.prebuffer = headstr.pack(*self.__head_data)
 
     def do_unpick_data(self, data):
-        ndata = data[20:]
-        print(ndata,__)
+        ndata = data[20:-2]
+        print(ndata)
         return ndata
 
 

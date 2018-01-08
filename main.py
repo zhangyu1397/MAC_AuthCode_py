@@ -24,13 +24,12 @@ class MainController:
         main_thd.start()
         while True:
             data = self.dataque.get()
-            print(data,__name__)
             self.file.write_mac(data)
 
     def _pth_run(self):
         while True:
             data = self.broadcast.get_broadcast_data()
-            if len(data) >20:
+            if len(data) > 30:
                 self.dataque.put(data)
 
 main = MainController()
