@@ -19,7 +19,8 @@ class PickupHeadData(HeadData):
 
     def do_unpick_data(self, data):
         ndata = data[20:-2]
-        print(ndata)
+        if len(ndata) > 20:
+            print("get data: %s" % ndata)
         return ndata
 
 

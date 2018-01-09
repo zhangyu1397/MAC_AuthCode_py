@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from PickupHeadData.PickupHeadData import PickupHeadData
 import socket
-import sys
+
 
 
 class BroadcastUdp:
@@ -12,10 +12,10 @@ class BroadcastUdp:
     def __init__(self, port):
         self.__parck = PickupHeadData()
         self.__port = port
-        self.__setup_client()
+        self.__setup_server()
         self.__broadcast_data()
 
-    def __setup_client(self):
+    def __setup_server(self):
         self._udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._udp.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
         self._udp.bind(('', self.__port))

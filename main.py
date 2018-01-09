@@ -11,13 +11,10 @@ class MainController:
     dataque = None
 
     def __init__(self):
-        self._sys_init()
-        self.dataque = queue.Queue()
-        self._run()
-
-    def _sys_init(self):
         self.broadcast = BroadcastUdp(34569)
         self.file = File()
+        self.dataque = queue.Queue()
+        self._run()
 
     def _run(self):
         main_thd = threading.Thread(target=self._pth_run)
@@ -32,12 +29,5 @@ class MainController:
             if len(data) > 30:
                 self.dataque.put(data)
 
+
 main = MainController()
-        #打开文件
-        #建立服务器
-        #建立广播程序
-        #发送广播
-        #接收广播
-        #JSON分析
-        #MAC换算
-        #存储到文件

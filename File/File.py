@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from File.MD5 import Md5
-import os
 import json
 
 
 class File:
     __fd = None
-    MAX_READLINES = 1024
     __mac_ser = 0
+
     def __init__(self):
         with open("./MAC-AuthCode.txt", 'a+') as self.__fd:
             print("sucess open\n")
@@ -31,34 +30,26 @@ class File:
 
     def __check_mac(self, mac):
         self.__fd.seek(0, 0)
+        max_ser = 0
         while True:
             read_line = self.__fd.readline(1024)
-            ser, gmac = self.__get_mac(read_line)
             if read_line == "":
-                return 1, ser
-            print("mac:%s gmac:%s\n" % (mac, gmac))
+                return 1, max_ser
+            if len(read_line) < 20:
+                continue
+            ser, gmac = self.__get_mac(read_line)
+            if ser > max_ser:
+                max_ser = ser
             if gmac == mac:
                 return 0, ser
 
     def __get_mac(self, data):
-        tmp = 0
-        #pdata = str(data, encoding="utf-8")
-        print("data type:", type(data))
-
-
         mac = data[9:26]
         ser = data[0:3]
-
         if len(ser) == 3:
-            print("ser",int(ser))
-            print("ll", type(ser[0]), len(ser[-1]))
             tmp = int(ser)
-            if tmp > self.__mac_ser:
-                self.__mac_ser = tmp
-                print("mac_ser:", self.__mac_ser)
-            return self.__mac_ser, mac
-        print("mac_ser:", self.__mac_ser)
-        return self.__mac_ser, mac
+            return tmp, mac
+        return 0, mac
 
 
 
