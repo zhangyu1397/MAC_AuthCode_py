@@ -1,2 +1,6 @@
+
 write dev
 write master
+write master
+write dev
+
