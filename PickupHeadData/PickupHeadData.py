@@ -20,7 +20,7 @@ class PickupHeadData(HeadData):
     def do_unpick_data(self, data):
         ndata = data[20:-2]
         if len(ndata) > 20:
-            print("get data: %s" % ndata)
+            print("get carema data: %s" % ndata)
         return ndata
 
 

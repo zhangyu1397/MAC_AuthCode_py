@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from PickupHeadData.PickupHeadData import PickupHeadData
 import socket
+import select
 
 
 
@@ -24,9 +25,14 @@ class BroadcastUdp:
         self._udp.sendto(self.__parck.prebuffer, ('255.255.255.255', self.__port))
 
     def get_broadcast_data(self):
-        data, addr = self._udp.recvfrom(1024)
-        return self.__parck.do_unpick_data(data)
-
+        input = [self._udp]
+        time_out = 0
+        readable, writable, exceptional = select.select(input, [], [], time_out)
+        for a in readable:
+            if a == self._udp:
+                data, addr = self._udp.recvfrom(1024)
+                return self.__parck.do_unpick_data(data)
+        return ""
 
 
 
