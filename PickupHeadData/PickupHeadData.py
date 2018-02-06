@@ -18,7 +18,9 @@ class PickupHeadData(HeadData):
         self.prebuffer = headstr.pack(*self.__head_data)
 
     def do_unpick_data(self, data):
-        ndata = data[20:-2]
+        ndata = data[20:]
+        ndata = ndata.rstrip(b'\0x00')
+        ndata = ndata.rstrip()
         if len(ndata) > 20:
             print("get carema data: %s" % ndata)
         return ndata
