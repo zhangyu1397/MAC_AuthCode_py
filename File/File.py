@@ -12,16 +12,22 @@ class File:
         with open("./MAC-AuthCode.txt", 'a+') as self.__fd:
             print("sucess open\n")
 
-    def write_mac(self, wirtestring):
+    def write_mac(self, mac):
         with open("./MAC-AuthCode.txt", 'a+') as self.__fd:
+            '''
             data = json.loads(wirtestring)
             mdata = data['NetWork.NetCommon']
-            mac = mdata['MAC']
+            #mac = mdata['MAC']
+            mac = '00:12:17:21:da:ed'
+            '''
+            if len(mac) < 10:
+                return -1
             ret, ser = self.__check_mac(mac)
             if ret == 1:
                 md5 = Md5(mac)
                 self.__fd.seek(0, 2)  # 0，光标移动到头；1光标移动当前位置；2光标移动末尾
                 self.__fd.write(self.__data_trans(ser, mac, md5.md5_data))
+                return 1
 
     def __data_trans(self, ret, mac, data):
         ret += 1

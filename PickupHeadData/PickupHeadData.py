@@ -3,6 +3,7 @@
 
 from NetBrocastUdp.HeadData import HeadData
 import struct
+import json
 import binascii
 import ctypes
 
@@ -21,9 +22,15 @@ class PickupHeadData(HeadData):
         ndata = data[20:]
         ndata = ndata.rstrip(b'\0x00')
         ndata = ndata.rstrip()
-        if len(ndata) > 20:
-            print("get carema data: %s" % ndata)
-        return ndata
+        if len(ndata) > 30:
+            tdata = json.loads(ndata)
+            mdata = tdata['NetWork.NetCommon']
+            mac = mdata['MAC']
+            print("get carema MAC: %s\n" % mac);
+            #mac = '00:12:17:21:da:ed'
+
+            return mac
+        return ""
 
 
 
