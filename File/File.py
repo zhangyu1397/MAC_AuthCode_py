@@ -20,6 +20,7 @@ class File:
             #mac = mdata['MAC']
             mac = '00:12:17:21:da:ed'
             '''
+            mac = "00:12:17:6b:b3:bc"
             if len(mac) < 10:
                 return -1
             ret, ser = self.__check_mac(mac)
@@ -32,6 +33,7 @@ class File:
     def __data_trans(self, ret, mac, data):
         ret += 1
         pic_data = "%3d MAC: %s    AuthCode: %s\n" % (ret, mac, data)
+        print(pic_data)
         return pic_data
 
     def __check_mac(self, mac):

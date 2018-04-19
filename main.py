@@ -32,7 +32,7 @@ class MainController:
                 data = self.dataque.get()
                 if len(data) > 0:
                     print("data %s\n" % data)
-                self.file.write_mac(data)
+                self.file.write_mac("00:12:17:6b:b3:bc")
 
     def _getCarema_run(self):
         while self.__run_flag:
@@ -44,7 +44,7 @@ class MainController:
     def __getFile_Mac(self):
         while self.__run_flag:
             mac = self.fileMac.getmac()
-            if len(mac) >10:
+            if len(mac) > 10:
                 self.dataque.put(mac)
 
     def _run_time(self):
